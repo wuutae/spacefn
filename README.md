@@ -25,7 +25,7 @@ Make the spacebar a modifier key.
 - Electron
 - Node.js
 - Bootstrap
-- 
+
 ## License
 
 [MIT](https://github.com/wuutae/spacefn/blob/main/LICENSE)
