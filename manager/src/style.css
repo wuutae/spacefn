@@ -1,0 +1,44 @@
+@font-face {
+  font-family: "Pretendard";
+  src: url("../node_modules/pretendard/dist/web/variable/woff2/PretendardVariable.woff2") format("woff2")
+}
+
+body {
+  font-family: "Pretendard", sans-serif;
+}
+
+.icon-size-24 {
+  font-size: 24px;
+  font-variation-settings: "OPSZ" 24;
+}
+
+.icon-size-26 {
+  font-size: 26px;
+  font-variation-settings: "OPSZ" 26;
+}
+
+.icon-size-30 {
+  font-size: 30px;
+  font-variation-settings: "OPSZ" 30;
+}
+
+.icon-size-48 {
+  font-size: 48px;
+  font-variation-settings: "OPSZ" 48;
+}
+
+main .container {
+  max-width: 850px;
+}
+
+::-webkit-scrollbar {
+  width: 7px;
+  height: 5px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: var(--border-radius);
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: white;
+  border-radius: var(--border-radius);
+}

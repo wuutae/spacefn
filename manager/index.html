@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; img-src 'self' data:;">
+    <title>SpaceFn</title>
+    <link
+      rel="stylesheet"
+      href="node_modules/bootstrap/dist/css/bootstrap.min.css"
+      class="css"
+    />
+    <link
+      rel="stylesheet"
+      href="node_modules/bootstrap-icons/font/bootstrap-icons.css"
+      class="css"
+    />
+    <link
+      rel="stylesheet"
+      href="node_modules/keyboard-css/dist/css/main.min.css"
+      class="css"
+    />
+    <link rel="stylesheet" href="src/style.css" />
+  </head>
+  <body data-bs-theme="light">
+    <header class="d-flex flex-column align-items-center">
+      <div class="text-center mt-4 mb-2">
+        <h1 class="display-4 fw-bold">SpaceFn</h1>
+        <p class="lead">Type like a pro.</p>
+      </div>
+      <div
+        class="w-25 mx-auto d-flex justify-content-between align-items-center"
+      >
+        <button id="github-btn" class="btn py-0 px-1">
+          <i class="bi bi-github"></i>
+        </button>
+        <div class="d-flex">
+          <div class="form-check-label d-inline-block">
+            <i
+              class="bi bi-brightness-high-fill me-3"
+              id="theme-switch-icon"
+            ></i>
+          </div>
+          <div
+            class="form-check form-switch d-inline-block">
+            <label for="theme-switch"></label>
+            <input class="form-check-input" type="checkbox" id="theme-switch" />
+          </div>
+        </div>
+      </div>
+    </header>
+    <main>
+      <div class="container text-center shadow-lg mt-4">
+        <div class="d-flex justify-content-between w-75 mx-auto pt-3">
+          <button id="btn-import-file" class="btn icon-size-24">
+            <i class="bi bi-pencil-square"></i>
+          </button>
+          <input
+            class="form-control d-none"
+            id="import-file"
+            type="file"
+            accept=".sfn"
+          />
+          <button id="export-file" class="btn icon-size-26">
+            <i class="bi bi-file-earmark-arrow-down"></i>
+          </button>
+        </div>
+
+        <div class="col mx-auto w-50">
+          <div class="row px-3">
+            <label for="activate-delay"></label>
+            <input
+              type="range"
+              class="form-range"
+              min="100"
+              max="200"
+              step="1"
+              id="activate-delay"
+            />
+          </div>
+          <div class="d-flex justify-content-between">
+            <div>100ms</div>
+            <div>200ms</div>
+          </div>
+        </div>
+        <div class="row justify-content-center py-4">
+          <div class="col-2">
+            <span>Target App</span>
+          </div>
+          <div class="col-2">
+            <span>SpaceFn Key</span>
+          </div>
+          <div class="col-1"></div>
+          <div class="col-4">
+            <span>Action Key</span>
+          </div>
+          <div class="col-1"></div>
+        </div>
+        <div id="item-container"></div>
+      </div>
+    </main>
+    <footer class="d-flex justify-content-center mt-4 mb-5"></footer>
+
+    <div id="modal" class="modal fade" tabindex="-1" data-bs-keyboard="false">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <span>Click keyboard button and press key</span>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="container-fluid text-center">
+              <div class="row justify-content-center align-items-center">
+                <div class="col-5" id="input-kbd-container"></div>
+                <div class="col-2">
+                  <i class="bi bi-arrow-right-short icon-size-48"></i>
+                </div>
+                <div class="col-5" id="output-kbd-container"></div>
+              </div>
+
+              <div class="row justify-content-center mt-1 mb-3">
+                <div class="col-5">
+                  <div
+                    class="btn btn-outline-primary btn-sm"
+                    id="input-detect-btn"
+                    data-bs-toggle="button"
+                  >
+                    <i class="bi bi-keyboard"></i>
+                  </div>
+                </div>
+                <div class="col-2"></div>
+                <div class="col-5">
+                  <div
+                    class="btn btn-outline-primary btn-sm"
+                    id="output-detect-btn"
+                    data-bs-toggle="button"
+                  >
+                    <i class="bi bi-keyboard"></i>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row justify-content-center">
+                <div class="col-5">
+                  <div class="d-flex justify-content-center align-items-center">
+                    <label for="target-app" class="pe-2">App</label>
+                    <input
+                      class="form-control my-3"
+                      id="target-app"
+                      type="text"
+                      placeholder="chrome.exe"
+                    />
+                  </div>
+                </div>
+                <div class="col-2"></div>
+                <div class="col-5">
+                  <label>
+                    <select
+                      class="form-select my-3"
+                      placeholder="foo"
+                      id="output-action-select"
+                    >
+                      <option value="">Select action</option>
+                      <option value="0x08">Backspace</option>
+                      <option value="0x14">Caps Lock</option>
+                      <option value="0x20">Space</option>
+                      <option value="0x21">Page Up</option>
+                      <option value="0x22">Page Down</option>
+                      <option value="0x23">End</option>
+                      <option value="0x24">Home</option>
+                      <option value="0x25">Left Arrow</option>
+                      <option value="0x26">Up Arrow</option>
+                      <option value="0x27">Right Arrow</option>
+                      <option value="0x28">Down Arrow</option>
+                      <option value="0x2A">Print</option>
+                      <option value="0x2C">Print Screen</option>
+                      <option value="0x2D">Insert</option>
+                      <option value="0x2E">Delete</option>
+                      <option value="0xA6">Browser Back</option>
+                      <option value="0xA7">Browser Forward</option>
+                      <option value="0xA8">Browser Refresh</option>
+                      <option value="0xA9">Browser Stop</option>
+                      <option value="0xAA">Browser Search</option>
+                      <option value="0xAD">Volume Mute</option>
+                      <option value="0xAF">Volume Up</option>
+                      <option value="0xAE">Volume Down</option>
+                      <option value="0xB0">Next Track</option>
+                      <option value="0xB1">Previous Track</option>
+                      <option value="0xB2">Stop Media</option>
+                      <option value="0xB3">Media Play/Pause</option>
+                      <option value="0xB5">Select Media</option>
+                    </select>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer justify-content-between">
+            <div id="delete-btn" class="btn btn-danger">
+              <i class="bi bi-trash"></i>
+            </div>
+            <div id="alert-container"></div>
+            <div id="save-btn" class="btn btn-success">
+              <i class="bi bi-check-lg"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="node_modules/@popperjs/core/dist/umd/popper.min.js"></script>
+    <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="src/renderer.js"></script>
+  </body>
+</html>

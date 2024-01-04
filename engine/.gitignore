@@ -1,0 +1,7 @@
+.idea/
+out/
+
+.vscode/
+.history/
+
+cmake-build-*/

@@ -1,0 +1,55 @@
+{
+  "name": "spacefn",
+  "version": "0.7.0",
+  "description": "Make the spacebar a modifier key and map it.",
+  "main": "main.js",
+  "scripts": {
+    "test": "test",
+    "start": "electron .",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder",
+    "postinstall": "electron-builder install-app-deps"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wuutae/spacefn.git"
+  },
+  "author": "wuutae",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/wuutae/spacefn/issues"
+  },
+  "homepage": "https://github.com/wuutae/spacefn#readme",
+  "devDependencies": {
+    "electron": "^28.1.1",
+    "electron-builder": "^24.9.1"
+  },
+  "dependencies": {
+    "@popperjs/core": "^2.11.8",
+    "bootstrap": "^5.3.2",
+    "bootstrap-icons": "^1.11.3",
+    "keyboard-css": "^1.2.4",
+    "pretendard": "^1.3.9"
+  },
+  "build": {
+    "appId": "spacefn",
+    "productName": "SpaceFn",
+    "icon": "icon.ico",
+    "win": {
+      "target": "nsis"
+    },
+    "nsis": {
+      "oneClick": true,
+      "perMachine": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "SpaceFn"
+    },
+    "extraResources": [
+      {
+        "from": "../engine/cmake-build-debug/spacefn_engine.exe",
+        "to": "spacefn_engine.exe"
+      }
+    ]
+  }
+}
