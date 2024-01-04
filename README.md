@@ -19,7 +19,7 @@ Make the spacebar a modifier key.
 - Map trigger & action keys for SpaceFn.
 - Hold down the spacebar and press Tab or semicolon to instantly activate SpaceFn, bypassing the required delay for automatic activation.
 - Only Windows is available for now.
-- 
+
 ## Tech Stack
 
 - Electron
