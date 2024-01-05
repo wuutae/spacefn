@@ -65,8 +65,9 @@ ipcMain.on("write-data", async (event, jsonString) => {
 
 // Load SpaceFn engine
 function loadEngine() {
-  // const exePath = "../engine/cmake-build-debug/spacefn_engine.exe";  // Path to engine binary
-  const exePath = "./resources/spacefn_engine.exe";  // Path to engine binary
+  const exePath = process.env.NODE_ENV.trim() === 'dev' ?
+      "../engine/cmake-build-debug/spacefn_engine.exe" :
+      "./resources/spacefn_engine.exe";
 
   // Kill engine process if it's already running and spawn a new one
   engine && engine.kill("SIGTERM");
