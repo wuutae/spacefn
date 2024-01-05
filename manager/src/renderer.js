@@ -127,7 +127,7 @@ const modal = {
 
         // return if key already exists
         for (let x in keyMapItems) {
-          if (x === this.selectedRowIdx) continue;
+          if (Number(x) === this.selectedRowIdx) continue;
           if (
             keyMapItems[x].keyCode === this.keyMapInput.keyCode &&
             keyMapItems[x].targetApp === this.keyMapInput.targetApp
@@ -331,14 +331,14 @@ async function loadDataWrapper() {
     keyMapItems.push(keyMap);
   }
   setTheme(parsedData.theme || "dark");
-  document.querySelector("#activate-delay").value = parsedData.activateDelay;
+  document.querySelector("#activate-delay").value = parseInt(parsedData.activateDelay);
   reloadContainer();
 }
 
 function getJsonString() {
   const exportData = {
     theme: document.body.getAttribute("data-bs-theme") || "dark",
-    activateDelay: document.querySelector("#activate-delay").value,
+    activateDelay: parseInt(document.querySelector("#activate-delay").value),
     keyMaps: keyMapItems.map((keyMapItem) => {
       return {
         keyCode: keyMapItem.keyCode,
@@ -522,7 +522,7 @@ document.querySelector("#export-file").addEventListener("click", () => {
   const blobUrl = URL.createObjectURL(blob);
 
   const downloadLink = document.createElement("a");
-  const fileName = "setting.sfn";
+  const fileName = "config.sfn";
   downloadLink.href = blobUrl;
   downloadLink.download = fileName;
   downloadLink.click();
