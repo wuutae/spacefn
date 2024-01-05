@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+#include <filesystem>
 #include <map>
 #include <windows.h>
 #include <shlobj.h>
@@ -16,23 +17,40 @@ int main() {
     CoTaskMemFree(path);
 
     // Read config file
-    const wstring configPath = appDataPath + L"\\spacefn\\config.sfn";
-    string filePath;
-    filePath.assign(configPath.begin(), configPath.end());
-    ifstream jsonFile(filePath);
-    if (!jsonFile.is_open()) return 1;
+    const wstring cPath = appDataPath + L"\\spacefn\\config.sfn";
+    string configPath;
+    configPath.assign(cPath.begin(), cPath.end());
+    ifstream configFile(configPath);
+    // Create config file if it does not exist
+    if (not filesystem::exists(cPath)) {
+        ofstream initFile(configPath);
+        // Initialize data
+        nlohmann::json initData = {
+                {"theme", "light"},
+                {"activateDelay", 150},
+                {"keyMaps", nlohmann::json::array()} // an empty array for "keyMaps"
+        };
+        initFile << initData.dump(2);
+        initFile.close();
+        configFile.open(configPath);
+    }
+
+    // Return if configFile is not open
+    if (!configFile.is_open()) return 1;
 
     // Parse KeyMaps and activateDelay
     nlohmann::json jsonData;
-    jsonFile >> jsonData;
-    if (jsonData.contains("keyMaps")) jsonData = jsonData["keyMaps"];
-    if (jsonData.contains("activateDelay")) spaceFn.threshold = jsonData["activateDelay"].get<int>();
+    configFile >> jsonData;
+    jsonData = nlohmann::json::parse(jsonData.dump());
+
+    // Set activateDelay
+    const int activateDelay = jsonData["activateDelay"].get<int>();
+    spaceFn.threshold = activateDelay;
 
     // Create KeyMap map
-    for (const auto& jsonDataElem : jsonData) {
-        const KeyMap keyMap(jsonDataElem);
+    for (const auto& keyMapJson : jsonData["keyMaps"]) {
+        const KeyMap keyMap(keyMapJson);
 
-        // Ensure that the keyCode is not already present in the map
         const pair<int, string> pair = make_pair(keyMap.keyCode, keyMap.targetApp);
         keyMaps[pair] = keyMap;
     }
