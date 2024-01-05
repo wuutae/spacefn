@@ -330,14 +330,14 @@ async function loadDataWrapper() {
   for (const keyMap of parsedData.keyMaps) {
     keyMapItems.push(keyMap);
   }
-  setTheme(parsedData.theme || "dark");
+  setTheme(parsedData.theme);
   document.querySelector("#activate-delay").value = parseInt(parsedData.activateDelay);
   reloadContainer();
 }
 
 function getJsonString() {
   const exportData = {
-    theme: document.body.getAttribute("data-bs-theme") || "dark",
+    theme: document.body.getAttribute("data-bs-theme"),
     activateDelay: parseInt(document.querySelector("#activate-delay").value),
     keyMaps: keyMapItems.map((keyMapItem) => {
       return {
