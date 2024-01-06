@@ -65,7 +65,7 @@ ipcMain.on("write-data", async (event, jsonString) => {
 
 // Load SpaceFn engine
 function loadEngine() {
-  const exePath = process.env.NODE_ENV.trim() === 'dev' ?
+  const exePath = process.env.NODE_ENV?.trim() === 'dev' ?
       "../engine/cmake-build-debug/spacefn_engine.exe" :
       "./resources/spacefn_engine.exe";
 
