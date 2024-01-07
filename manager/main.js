@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain } = require("electron");
+  const { app, BrowserWindow, ipcMain, Menu, Tray } = require("electron");
 const { spawn } = require("child_process");
 const path = require("node:path");
 const fs = require("fs");
@@ -7,10 +7,11 @@ const fs = require("fs");
 const configPath = path.join(app.getPath("appData"), "spacefn", "config.sfn");  // Path to config file
 let manager;  // Electron window
 let engine;  // SpaceFn engine
+let tray;
 
-
-// Create Electron window
-const createWindow = () => {
+// Load Electron window
+app.whenReady().then(() => {
+  // Create window
   manager = new BrowserWindow({
     width: 800,
     height: 600,
@@ -25,15 +26,33 @@ const createWindow = () => {
 
   // Load index.html
   manager.loadFile("index.html");
-}
-
-// Load Electron window
-app.whenReady().then(() => {
-  loadEngine();
-  createWindow();
-
   app.on("activate", () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow();
+  });
+
+  // Load SpaceFn engine
+  loadEngine();
+
+  // Create tray
+  tray = new Tray("icon.ico");
+  const contextMenu = Menu.buildFromTemplate([
+    { label: 'Show', click: () => { manager.show(); } },
+    { label: 'Exit', click: () => { app.quit(); } }
+  ]);
+  tray.setToolTip('SpaceFn is good');
+  tray.setContextMenu(contextMenu);
+  tray.on('click', () => manager.show());
+
+  // Hide window on close
+  manager.on('close', (event) => {
+    event.preventDefault();
+    manager.hide();
+  });
+
+  // Quit app on explicit quit
+  app.on('before-quit', () => {
+    tray.destroy();
+    manager.destroy();
   });
 });
 
