@@ -6,7 +6,10 @@ const fs = require("fs");
 
 const configPath = path.join(app.getPath("appData"), "spacefn", "config.sfn");  // Path to config file
 let manager;  // Electron window
-let engine;  // SpaceFn engine
+const engine = {
+  process: null,
+  intendedShutdown: false
+}
 let tray;
 
 // Load Electron window
@@ -37,6 +40,17 @@ app.whenReady().then(() => {
   tray = new Tray("icon.ico");
   const contextMenu = Menu.buildFromTemplate([
     { label: 'Show', click: () => { manager.show(); } },
+    { label: 'Enable/Disable', click: () => {
+        if (engine.process) {
+          engine.intendedShutdown = true;
+          engine.process.kill("SIGTERM");
+          engine.process = null;
+        }
+        else {
+          loadEngine();
+        }
+      }
+    },
     { label: 'Exit', click: () => { app.quit(); } }
   ]);
   tray.setToolTip('SpaceFn is good');
@@ -76,6 +90,7 @@ ipcMain.on("write-data", async (event, jsonString) => {
     if (err) {
       console.log("error: " + err);
     } else {
+      engine.intendedShutdown = true;
       loadEngine();  // Reload engine
       manager.webContents.send("reload-renderer");  // Reload renderer
     }
@@ -89,16 +104,22 @@ function loadEngine() {
       "./resources/spacefn_engine.exe";
 
   // Kill engine process if it's already running and spawn a new one
-  engine && engine.kill("SIGTERM");
-  engine = spawn(exePath);
+  engine.process && engine.process.kill("SIGTERM");
+  engine.process = spawn(exePath);
 
   // Handle engine output
-  engine.stdout.on("data", (data) => {
+  engine.process.stdout.on("data", (data) => {
     console.log(`cout: ${data}`);
   });
 
   // Handle engine error
-  engine.on("error", (err) => {
+  engine.process.on("error", (err) => {
     console.error(`cerr: ${err.message}`);
   });
+
+  engine.process.on("close", () => {
+    engine.intendedShutdown || app.quit();
+    engine.intendedShutdown = false;
+  })
+
 }
