@@ -38,7 +38,10 @@ app.whenReady().then(() => {
   loadEngine();
 
   // Create tray
-  tray = new Tray("icon.ico");
+  const iconPath = process.env.NODE_ENV?.trim() === 'dev' ?
+      "icon.ico" :
+      "./resources/icon.ico";
+  tray = new Tray(iconPath);
   const contextMenu = Menu.buildFromTemplate([
     { label: 'Show', click: () => { manager.show(); } },
     { label: 'Enable/Disable', click: () => {

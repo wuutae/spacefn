@@ -50,6 +50,10 @@
       {
         "from": "../engine/cmake-build-debug/spacefn_engine.exe",
         "to": "spacefn_engine.exe"
+      },
+      {
+        "from": "icon.ico",
+        "to": "icon.ico"
       }
     ]
   }
