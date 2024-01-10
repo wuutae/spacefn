@@ -137,20 +137,6 @@ const modal = {
           }
         }
 
-        // return if trigger key and action key are the same.
-        if (this.keyMapInput.keyCode === this.keyMapInput.map.keyCode) {
-          if (
-            !this.keyMapInput.map.modifierKeys.ctrl &&
-            !this.keyMapInput.map.modifierKeys.shift &&
-            !this.keyMapInput.map.modifierKeys.alt &&
-            !this.keyMapInput.map.modifierKeys.win
-          ) {
-            this.showAlert("Trigger key and action key cannot be the same.");
-            this.setKeyMapInput(this.outputDetectBtn, null, null);
-            return;
-          }
-        }
-
         // process if key mapping is valid.
         keyMapItems[this.selectedRowIdx] = this.keyMapInput; // set corresponding key map item to key map input of modal.
         this.keyMapInput = newKeyMap(); // reset key map input of modal.
