@@ -130,7 +130,7 @@ async function loadEngine() {
   // Restart PowerToys
   const powerToys = await getPowerToysKMEngine();
   if (powerToys.pid) {
-    process.kill(powerToys.pid, "SIGTERM");
+    process.npmkill(powerToys.pid, "SIGTERM");
     spawn(powerToys.binPath, [], {
       detached: true,
       stdio: "ignore",
