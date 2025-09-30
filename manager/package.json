@@ -49,7 +49,7 @@
     },
     "extraResources": [
       {
-        "from": "../engine/cmake-build-debug/spacefn_engine.exe",
+        "from": "../engine/cmake-build-release/spacefn_engine.exe",
         "to": "spacefn_engine.exe"
       },
       {
